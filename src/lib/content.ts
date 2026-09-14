@@ -93,7 +93,7 @@ export const topics: Topic[] = [
   {
     slug: "impersonation",
     name: "Impersonation",
-    summary: "Someone pretends to be a teacher, friend or官 official.",
+    summary: "Someone pretends to be a teacher, friend or official.",
     definition: "Impersonation is pretending to be a person you already trust, online or in person.",
     how: ["A fake profile copies a teacher's photo and name.", "The message starts friendly.", "A request for money or data follows."],
     signs: ["New account of a known person", "Different writing style", "Requests kept secret"],
