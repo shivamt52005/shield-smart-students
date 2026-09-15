@@ -32,7 +32,7 @@ function Simulator() {
   const [correct, setCorrect] = useState(0);
   const [finished, setFinished] = useState(false);
 
-  const s = scenarios[index];
+  const s = scenarios[index]!;
 
   function answer(value: boolean) {
     if (choice !== null) return;
