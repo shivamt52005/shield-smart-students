@@ -31,7 +31,7 @@ function QuizPage() {
   const [score, setScore] = useState(0);
   const [finished, setFinished] = useState(false);
 
-  const q = quiz[index];
+  const q = quiz[index]!;
 
   function choose(i: number) {
     if (picked !== null) return;
