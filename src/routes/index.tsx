@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { ShieldCheck, AlertTriangle, GraduationCap, Flag } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { topics } from "@/lib/content";
+import { emptyProgress, readProgress, type Progress as P } from "@/lib/progress";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -26,13 +28,6 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const stats = [
-  { label: "Students trained", value: "1,240" },
-  { label: "Simulations completed", value: "3,860" },
-  { label: "Threats identified", value: "912" },
-  { label: "Reports reviewed", value: "152" },
-];
-
 const tips = [
   "Type official web addresses yourself instead of clicking links.",
   "Never share a password or OTP, even with someone who sounds official.",
@@ -43,7 +38,19 @@ const tips = [
 ];
 
 function Home() {
+  const [p, setP] = useState<P>(emptyProgress);
+  useEffect(() => setP(readProgress()), []);
+
+  const bestQuiz = p.quizScores.length ? Math.max(...p.quizScores) : 0;
+  const stats = [
+    { label: "Lessons completed", value: `${p.modulesRead.length}` },
+    { label: "Simulations answered", value: `${p.simTotal}` },
+    { label: "Best quiz score", value: `${bestQuiz}%` },
+    { label: "Reports submitted", value: `${p.reports.length}` },
+  ];
+
   return (
+
     <SiteLayout>
       <section className="border-b bg-secondary">
         <div className="mx-auto max-w-6xl px-4 py-16 text-center">
@@ -76,7 +83,11 @@ function Home() {
             </Card>
           ))}
         </div>
+        <p className="mt-4 text-center text-sm text-muted-foreground">
+          Your own activity on this device.
+        </p>
       </section>
+
 
       <section className="mx-auto max-w-6xl px-4 pb-12">
         <h2 className="text-2xl font-semibold">Why it matters</h2>
