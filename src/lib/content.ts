@@ -353,35 +353,8 @@ export const quiz: Question[] = [
   },
 ];
 
-export const sampleStudents = [
-  { name: "Aarav Sharma", dept: "CSE", quiz: 93, sims: 96, points: 480 },
-  { name: "Diya Nair", dept: "IT", quiz: 91, sims: 92, points: 465 },
-  { name: "Rohan Iyer", dept: "ECE", quiz: 88, sims: 90, points: 440 },
-  { name: "Sanya Gupta", dept: "CSE", quiz: 86, sims: 84, points: 425 },
-  { name: "Kabir Menon", dept: "Mech", quiz: 82, sims: 80, points: 400 },
-  { name: "Ishita Rao", dept: "IT", quiz: 79, sims: 83, points: 385 },
-  { name: "Vikram Singh", dept: "Civil", quiz: 74, sims: 71, points: 350 },
-  { name: "Meera Joshi", dept: "CSE", quiz: 70, sims: 68, points: 330 },
-  { name: "Arjun Patel", dept: "ECE", quiz: 66, sims: 64, points: 300 },
-  { name: "Nisha Verma", dept: "Mech", quiz: 61, sims: 59, points: 275 },
-];
+export const attackTypeNames = [
 
-export const sampleReports = [
-  { date: "12 Sep", type: "Phishing", summary: "Fake portal password expiry email", status: "Reviewed" },
-  { date: "11 Sep", type: "Smishing", summary: "SMS about a held parcel with a short link", status: "Reviewed" },
-  { date: "10 Sep", type: "Vishing", summary: "Call asking for a bank OTP", status: "Under review" },
-  { date: "09 Sep", type: "Impersonation", summary: "Fake professor account asking for vouchers", status: "Reviewed" },
-  { date: "08 Sep", type: "Baiting", summary: "USB drive left in Lab 2", status: "Closed" },
-];
-
-export const attackStats = [
-  { type: "Phishing", reports: 58 },
-  { type: "Smishing", reports: 34 },
-  { type: "Vishing", reports: 22 },
-  { type: "Impersonation", reports: 18 },
-  { type: "Baiting", reports: 11 },
-  { type: "Others", reports: 9 },
-];
 
 export const attackTypeNames = [
   "Phishing",
