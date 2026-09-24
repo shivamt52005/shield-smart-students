@@ -354,9 +354,6 @@ export const quiz: Question[] = [
 ];
 
 export const attackTypeNames = [
-
-
-export const attackTypeNames = [
   "Phishing",
   "Smishing",
   "Vishing",
