@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { CheckCircle2 } from "lucide-react";
+import { useEffect, useState } from "react";
+import { CheckCircle2, Trash2 } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { attackTypeNames, sampleReports } from "@/lib/content";
-import { updateProgress } from "@/lib/progress";
+import { attackTypeNames } from "@/lib/content";
+import { readProgress, updateProgress, type ReportEntry } from "@/lib/progress";
 
 export const Route = createFileRoute("/report")({
   head: () => ({
@@ -14,10 +14,10 @@ export const Route = createFileRoute("/report")({
       { title: "Report a Suspicious Message | Cyber Awareness Portal" },
       {
         name: "description",
-        content: "Practise reporting a suspicious email, text or call. Demonstration form with no data sent anywhere.",
+        content: "Record a suspicious email, text or call. Your reports are saved on your own device.",
       },
       { property: "og:title", content: "Report a Suspicious Message" },
-      { property: "og:description", content: "A practice reporting form for students, with sample past reports." },
+      { property: "og:description", content: "Record suspicious messages and review your own report history." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -26,20 +26,35 @@ export const Route = createFileRoute("/report")({
 });
 
 function ReportPage() {
-  const [type, setType] = useState(attackTypeNames[0]);
+  const [type, setType] = useState(attackTypeNames[0]!);
   const [details, setDetails] = useState("");
   const [sent, setSent] = useState(false);
+  const [reports, setReports] = useState<ReportEntry[]>([]);
+
+  useEffect(() => setReports(readProgress().reports), []);
 
   function submit(e: React.FormEvent) {
     e.preventDefault();
-    updateProgress((p) => ({ ...p, reports: p.reports + 1 }));
+    const entry: ReportEntry = {
+      id: `${Date.now()}`,
+      date: new Date().toLocaleDateString(undefined, { day: "2-digit", month: "short" }),
+      type,
+      details: details.trim(),
+    };
+    const next = updateProgress((p) => ({ ...p, reports: [entry, ...p.reports] }));
+    setReports(next.reports);
     setSent(true);
   }
 
   function again() {
     setDetails("");
-    setType(attackTypeNames[0]);
+    setType(attackTypeNames[0]!);
     setSent(false);
+  }
+
+  function remove(id: string) {
+    const next = updateProgress((p) => ({ ...p, reports: p.reports.filter((r) => r.id !== id) }));
+    setReports(next.reports);
   }
 
   return (
@@ -47,8 +62,8 @@ function ReportPage() {
       <div className="mx-auto max-w-3xl px-4 py-12">
         <h1 className="text-3xl font-bold">Report a suspicious message</h1>
         <p className="mt-2 text-muted-foreground">
-          This is a practice form for the awareness portal. Nothing is sent anywhere. Never paste a password or OTP
-          into any form, including this one.
+          Your reports are saved on this device only. Never paste a password or OTP into any form, including this
+          one.
         </p>
 
         {sent ? (
@@ -61,7 +76,7 @@ function ReportPage() {
             <CardContent>
               <p className="text-sm text-muted-foreground">
                 Well done. In a real incident you would also inform your college IT helpdesk, and delete or block the
-                sender. Your report count has been added to your dashboard.
+                sender. Your report is now listed below and on your dashboard.
               </p>
               <Button className="mt-6" onClick={again}>
                 Report another
@@ -118,23 +133,36 @@ function ReportPage() {
 
         <Card className="mt-6">
           <CardHeader>
-            <CardTitle>Recent reports (sample)</CardTitle>
+            <CardTitle>Your reports ({reports.length})</CardTitle>
           </CardHeader>
           <CardContent>
-            <ul className="divide-y">
-              {sampleReports.map((r) => (
-                <li key={r.summary} className="flex items-start justify-between gap-3 py-3 text-sm">
-                  <div>
-                    <p className="font-medium">{r.type}</p>
-                    <p className="text-muted-foreground">{r.summary}</p>
-                  </div>
-                  <div className="shrink-0 text-right">
-                    <Badge variant="outline">{r.status}</Badge>
-                    <p className="mt-1 text-xs text-muted-foreground">{r.date}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            {reports.length === 0 ? (
+              <p className="text-sm text-muted-foreground">
+                You have not reported anything yet. Submitted reports will appear here.
+              </p>
+            ) : (
+              <ul className="divide-y">
+                {reports.map((r) => (
+                  <li key={r.id} className="flex items-start justify-between gap-3 py-3 text-sm">
+                    <div>
+                      <p className="font-medium">{r.type}</p>
+                      <p className="whitespace-pre-wrap text-muted-foreground">{r.details}</p>
+                    </div>
+                    <div className="flex shrink-0 flex-col items-end gap-1">
+                      <Badge variant="outline">{r.date}</Badge>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => remove(r.id)}
+                        aria-label="Delete this report"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            )}
           </CardContent>
         </Card>
       </div>
