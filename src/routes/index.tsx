@@ -1,9 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { ShieldCheck, AlertTriangle, GraduationCap, Flag } from "lucide-react";
 import { SiteLayout } from "@/components/SiteLayout";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { topics } from "@/lib/content";
+import { emptyProgress, readProgress, type Progress as P } from "@/lib/progress";
 
 export const Route = createFileRoute("/")({
   head: () => ({
