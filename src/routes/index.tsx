@@ -72,7 +72,11 @@ function Home() {
             </Card>
           ))}
         </div>
+        <p className="mt-4 text-center text-sm text-muted-foreground">
+          Your own activity on this device.
+        </p>
       </section>
+
 
       <section className="mx-auto max-w-6xl px-4 pb-12">
         <h2 className="text-2xl font-semibold">Why it matters</h2>
