@@ -26,12 +26,8 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const stats = [
-  { label: "Students trained", value: "1,240" },
-  { label: "Simulations completed", value: "3,860" },
-  { label: "Threats identified", value: "912" },
-  { label: "Reports reviewed", value: "152" },
-];
+const tipsPlaceholder = null;
+
 
 const tips = [
   "Type official web addresses yourself instead of clicking links.",
