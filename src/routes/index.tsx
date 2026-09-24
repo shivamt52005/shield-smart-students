@@ -26,9 +26,6 @@ export const Route = createFileRoute("/")({
   component: Home,
 });
 
-const tipsPlaceholder = null;
-
-
 const tips = [
   "Type official web addresses yourself instead of clicking links.",
   "Never share a password or OTP, even with someone who sounds official.",
@@ -39,7 +36,19 @@ const tips = [
 ];
 
 function Home() {
+  const [p, setP] = useState<P>(emptyProgress);
+  useEffect(() => setP(readProgress()), []);
+
+  const bestQuiz = p.quizScores.length ? Math.max(...p.quizScores) : 0;
+  const stats = [
+    { label: "Lessons completed", value: `${p.modulesRead.length}` },
+    { label: "Simulations answered", value: `${p.simTotal}` },
+    { label: "Best quiz score", value: `${bestQuiz}%` },
+    { label: "Reports submitted", value: `${p.reports.length}` },
+  ];
+
   return (
+
     <SiteLayout>
       <section className="border-b bg-secondary">
         <div className="mx-auto max-w-6xl px-4 py-16 text-center">
